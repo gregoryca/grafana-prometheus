@@ -626,3 +626,5 @@ grafana-data/grafana.db
 grafana-data/alerting/1/__default__.tmpl
 metricbeat-data/meta.json
 metricbeat-data/metricbeat.lock
+elasticsearch-data/indices/o8oD7xKFQCenVO08Io8LbA/0/_state/retention-leases-1842.st
+elasticsearch-data/indices/o8oD7xKFQCenVO08Io8LbA/0/_state/retention-leases-1841.st
