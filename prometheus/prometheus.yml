@@ -7,7 +7,7 @@ global:
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
   external_labels:
-      monitor: 'my-project'
+      monitor: 'Apex-Migrations Lab'
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
@@ -23,26 +23,45 @@ alerting:
     - targets:
       - "alertmanager:9093"
 
-# A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-
   - job_name: app-testing
     scrape_interval: 5s
     static_configs:
-      - targets: ['server17a:8000']
+      - targets: ['192.168.2.3:8000']
 
+  ###########
+  # Traefik #
+  ###########
+  # Collects Traefik Metrics configured in the static traefik configuration
+  - job_name: traefik
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.3:8082']
+
+  ##############
+  # Prometheus #
+  ##############
+  # Collects metrics about Prometheus
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
-         - targets: ['server17a:9090']
-
+         - targets: ['192.168.2.3:9090']
+ 
+  ############
+  # Cadvisor #
+  ############
+  # Collects info based on Cadvisor for containers
   - job_name: grafana.cadvisor
     scrape_interval: 5s
     static_configs:
       - targets: ['grafana.cadvisor:8080']
 
+  #################
+  # Node-Exporter #
+  #################
+  # Collects info based on the node exporer
   - job_name: grafana.node-exporter
     scrape_interval: 5s
     static_configs:
