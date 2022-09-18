@@ -38,14 +38,56 @@
       state: directory
       mode: '0777'
 
-  ###################################################
-  # Creating a the prometheus directory on the host #
-  ###################################################
+  #####################################
+  # Copy the alertmanager config file #
+  #####################################
+  - name: copy alertmanager config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/alertmanager/config.yml
+      dest: /home/gregory/srv/grafana-promethues/alertmanager/config.yml
+      remote_src: yes
+    loop:
+    - config.yml
+
+  #################################################
+  # Creating the prometheus directory on the host #
+  #################################################
   - name: Create the prometheus directory if it does not exist
     ansible.builtin.file:
       path: /home/gregory/srv/grafana-prometheus/prometheus/
       state: directory
       mode: '0777'
+
+  ###################################
+  # Copy the prometheus config file #
+  ###################################
+  - name: copy prometheus config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/prometheus/prometheus.yml
+      dest: /home/gregory/srv/grafana-prometheus/prometheus/prometheus.yml
+      remote_src: yes
+    loop:
+    - prometheus.yml
+
+  ###################################################
+  # Creating a the prometheus directory on the host #
+  ###################################################
+  - name: Create the grafana directory if it does not exist
+    ansible.builtin.file:
+      path: /home/gregory/srv/grafana-prometheus/grafana/provisioning/
+      state: directory
+      mode: '0777'
+
+  ###################################
+  # Copy the prometheus config file #
+  ###################################
+  - name: copy prometheus config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/grafana/provisioning/prometheus_ds.yml
+      dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/prometheus_ds.yml
+      remote_src: yes
+    loop:
+    - prometheus.yml
 
   #########################
   # Copy the compose file #
@@ -69,38 +111,16 @@
     loop:
     - elasticsearch.yml
 
-  ###################################
-  # Copy the prometheus config file #
-  ###################################
-  - name: copy prometheus config file to remote server
-    copy:
-      src: /temp/grafana-prometheus/prometheus/prometheus.yml
-      dest: /home/gregory/srv/grafana-prometheus/prometheus/prometheus.yml
-      remote_src: yes
-    loop:
-    - prometheus.yml
-
   #############################
   # Copy the alert rules file #
   #############################
-  - name: copy prometheus config file to remote server
+  - name: copy alert.rules file to remote server
     copy:
       src: /temp/grafana-prometheus/prometheus/alert.rules
       dest: /home/gregory/srv/grafana-prometheus/prometheus/alert.rules
       remote_src: yes
     loop:
     - alert.rules
-
-  #####################################
-  # Copy the alertmanager config file #
-  #####################################
-  - name: copy alertmanager config file to remote server
-    copy:
-      src: /temp/grafana-prometheus/alertmanager/config.yml
-      dest: /home/gregory/srv/grafana-promethues/alertmanager/config.yml
-      remote_src: yes
-    loop:
-    - config.yml
 
   #######################
   # Deploy compose file #
