@@ -71,7 +71,7 @@
   #################################################
   - name: Create the prometheus directory if it does not exist
     ansible.builtin.file:
-      path: /home/gregory/srv/grafana-prometheus/prometheus/datasources/
+      path: /home/gregory/srv/grafana-prometheus/prometheus/provisioning/datasources/
       state: directory
       mode: '0777'
 
