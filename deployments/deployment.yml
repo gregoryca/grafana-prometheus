@@ -1,0 +1,121 @@
+---
+- hosts: all
+  become: true
+  tasks:
+
+  #########################################
+  # Creating a temp directory on the host #
+  #########################################
+  - name: Create a temp directory if it does not exist
+    ansible.builtin.file:
+      path: /temp/grafana-promteheus/
+      state: directory
+      mode: '0777'
+
+  ######################################
+  # Checkout Git Repo for latest code #
+  ######################################
+  - name: Checkout Git repo in temp directory
+    ansible.builtin.git:
+      repo: 'https://github.com/gregoryca/grafana-prometheus.git'
+      dest: /temp/grafana-prometheus/
+
+  #######################################################
+  # Creating a grafana-prometheus directory on the host #
+  #######################################################  
+  - name: Create the srv directory if it does not exist
+    ansible.builtin.file:
+      path: /home/gregory/srv/grafana-prometheus/
+      state: directory
+      mode: '0777'
+
+  #################################################
+  # Creating a alertmanager directory on the host #
+  #################################################  
+  - name: Create the alertmanager directory if it does not exist
+    ansible.builtin.file:
+      path: /home/gregory/srv/grafana-prometheus/alertmanager/
+      state: directory
+      mode: '0777'
+
+  ###################################################
+  # Creating a the prometheus directory on the host #
+  ###################################################
+  - name: Create the prometheus directory if it does not exist
+    ansible.builtin.file:
+      path: /home/gregory/srv/grafana-prometheus/prometheus/
+      state: directory
+      mode: '0777'
+
+  #########################
+  # Copy the compose file #
+  #########################
+  - name: copy Docker Compose files to remote server
+    copy:
+      src: /temp/grafana-prometheus/docker-compose.yml
+      dest: /home/gregory/srv/grafana-prometheus/
+      remote_src: yes
+    loop:
+    - docker-compose.yml
+
+  ###############################
+  # Copy the elasticsearch file #
+  ###############################
+  - name: copy elasticsearch files to remote server
+    copy:
+      src: /temp/grafana-prometheus/elasticsearch.yml
+      dest: /home/gregory/srv/grafana-prometheus/
+      remote_src: yes
+    loop:
+    - elasticsearch.yml
+
+  ###################################
+  # Copy the prometheus config file #
+  ###################################
+  - name: copy prometheus config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/prometheus/prometheus.yml
+      dest: /home/gregory/srv/grafana-prometheus/prometheus/prometheus.yml
+      remote_src: yes
+    loop:
+    - prometheus.yml
+
+  #############################
+  # Copy the alert rules file #
+  #############################
+  - name: copy prometheus config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/prometheus/alert.rules
+      dest: /home/gregory/srv/grafana-prometheus/prometheus/alert.rules
+      remote_src: yes
+    loop:
+    - alert.rules
+
+  #####################################
+  # Copy the alertmanager config file #
+  #####################################
+  - name: copy alertmanager config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/alertmanager/config.yml
+      dest: /home/gregory/srv/grafana-promethues/alertmanager/config.yml
+      remote_src: yes
+    loop:
+    - config.yml
+
+  #######################
+  # Deploy compose file #
+  #######################
+  - name: deploy Docker Compose stack on remote server
+    docker_compose:
+      project_src: /home/gregory/srv/grafana-prometheus/
+      files:
+      - docker-compose.yml
+      recreate: always
+
+  #########################################
+  # Clean up temp folder after deployment #
+  #########################################
+  - name: Delete content & directory
+    file:
+      state: absent
+      path: /temp/
