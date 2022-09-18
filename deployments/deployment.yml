@@ -95,7 +95,7 @@
       dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
       remote_src: yes
     loop:
-    - prometheus.yml
+    - prometheus_ds.yml
 
   #########################
   # Copy the compose file #
