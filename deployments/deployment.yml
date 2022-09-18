@@ -71,9 +71,20 @@
   #################################################
   - name: Create the prometheus directory if it does not exist
     ansible.builtin.file:
-      path: /home/gregory/srv/grafana-prometheus/prometheus/datasources/
+      path: ~/srv/grafana-prometheus/grafana/provisioning/datasources/
       state: directory
       mode: '0777'
+
+  ###################################
+  # Copy the prometheus config file #
+  ###################################
+  - name: copy prometheus config file to remote server
+    copy:
+      src: /temp/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
+      dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
+      remote_src: yes
+    loop:
+    - prometheus_ds.yml
 
   ###################################
   # Copy the prometheus config file #
@@ -94,17 +105,6 @@
       path: /home/gregory/srv/grafana-prometheus/grafana/provisioning/
       state: directory
       mode: '0777'
-
-  ###################################
-  # Copy the prometheus config file #
-  ###################################
-  - name: copy prometheus config file to remote server
-    copy:
-      src: /temp/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
-      dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
-      remote_src: yes
-    loop:
-    - prometheus_ds.yml
 
   #########################
   # Copy the compose file #
