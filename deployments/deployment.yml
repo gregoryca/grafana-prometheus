@@ -139,6 +139,13 @@
     loop:
     - alert.rules
 
+  ###############################
+  # Creating docker network web #
+  ###############################
+  - name: Create monitoring-stack network
+    docker_network:
+      name: monitoring-stack
+
   #######################
   # Deploy compose file #
   #######################
