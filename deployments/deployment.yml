@@ -44,7 +44,7 @@
   - name: copy alertmanager config file to remote server
     copy:
       src: /temp/grafana-prometheus/alertmanager/config.yml
-      dest: /home/gregory/srv/grafana-promethues/alertmanager/config.yml
+      dest: /home/gregory/srv/grafana-prometheus/alertmanager/config.yml
       remote_src: yes
     loop:
     - config.yml
