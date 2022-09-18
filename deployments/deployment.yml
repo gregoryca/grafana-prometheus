@@ -83,8 +83,8 @@
   ###################################
   - name: copy prometheus config file to remote server
     copy:
-      src: /temp/grafana-prometheus/grafana/provisioning/prometheus_ds.yml
-      dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/prometheus_ds.yml
+      src: /temp/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
+      dest: /home/gregory/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
       remote_src: yes
     loop:
     - prometheus.yml
