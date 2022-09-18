@@ -25,11 +25,6 @@ alerting:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: app-testing
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['192.168.2.3:8000']
-
   ###########
   # Traefik #
   ###########
