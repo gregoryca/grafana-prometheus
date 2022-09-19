@@ -10,6 +10,7 @@
     ansible.builtin.apt:
       name: ufw
       state: present
+    become: true
 
   #########################################
   # Creating a temp directory on the host #
@@ -19,6 +20,7 @@
       path: /temp/grafana-promteheus/
       state: directory
       mode: '0777'
+    become: true
 
   ######################################
   # Checkout Git Repo for latest code #
@@ -36,6 +38,7 @@
       path: ~/srv/grafana-prometheus/
       state: directory
       mode: '0777'
+    become: true
 
   #################################################
   # Creating a alertmanager directory on the host #
@@ -45,6 +48,7 @@
       path: ~/srv/grafana-prometheus/alertmanager/
       state: directory
       mode: '0777'
+    become: true
 
   #####################################
   # Copy the alertmanager config file #
@@ -109,7 +113,7 @@
   #########################
   # Copy the compose file #
   #########################
-  - name: copy Docker Compose files to remote server
+  - name: copy Docker Compose file to remote server
     copy:
       src: /temp/grafana-prometheus/docker-compose.yml
       dest: ~/srv/grafana-prometheus/
