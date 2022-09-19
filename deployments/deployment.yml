@@ -20,7 +20,6 @@
       path: /temp/
       state: directory
       mode: '0777'
-    become: true
 
   ######################################
   # Checkout Git Repo for latest code #
@@ -35,10 +34,20 @@
   #######################################################  
   - name: Create the grafana-prometheus directory if it does not exist
     ansible.builtin.file:
-      path: home/gregory/srv/grafana-prometheus/
+      path: /home/gregory/srv/grafana-prometheus/
       state: directory
       mode: '0777'
-    become: true
+
+  #########################
+  # Copy the compose file #
+  #########################
+  - name: copy Docker Compose file to remote server
+    copy:
+      src: /temp/grafana-prometheus/docker-compose.yml
+      dest: /home/gregory/srv/grafana-prometheus/
+      remote_src: yes
+    loop:
+    - docker-compose.yml
 
   #################################################
   # Creating a alertmanager directory on the host #
@@ -48,7 +57,6 @@
       path: ~/srv/grafana-prometheus/alertmanager/
       state: directory
       mode: '0777'
-    become: true
 
   #####################################
   # Copy the alertmanager config file #
@@ -70,26 +78,6 @@
       state: directory
       mode: '0777'
 
-  #################################################
-  # Creating the prometheus directory on the host #
-  #################################################
-  - name: Create the datasources directory if it does not exist
-    ansible.builtin.file:
-      path: ~/srv/grafana-prometheus/grafana/provisioning/datasources/
-      state: directory
-      mode: '0777'
-
-  ###################################
-  # Copy the prometheus config file #
-  ###################################
-  - name: copy prometheus config file to remote server
-    copy:
-      src: /temp/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
-      dest: ~/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
-      remote_src: yes
-    loop:
-    - prometheus_ds.yml
-
   ###################################
   # Copy the prometheus config file #
   ###################################
@@ -110,16 +98,25 @@
       state: directory
       mode: '0777'
 
-  #########################
-  # Copy the compose file #
-  #########################
-  - name: copy Docker Compose file to remote server
+  ##############################################
+  # Creating the grafana directory on the host #
+  ##############################################
+  - name: Create the grafana datasources directory if it does not exist
+    ansible.builtin.file:
+      path: ~/srv/grafana-prometheus/grafana/provisioning/datasources/
+      state: directory
+      mode: '0777'
+
+  ###################################
+  # Copy the prometheus config file #
+  ###################################
+  - name: copy datasources config file to remote server
     copy:
-      src: /temp/grafana-prometheus/docker-compose.yml
-      dest: ~/srv/grafana-prometheus/
+      src: /temp/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
+      dest: ~/srv/grafana-prometheus/grafana/provisioning/datasources/prometheus_ds.yml
       remote_src: yes
     loop:
-    - docker-compose.yml
+    - prometheus_ds.yml
 
   ###############################
   # Copy the elasticsearch file #
@@ -155,7 +152,7 @@
   #######################
   - name: deploy Docker Compose stack on remote server
     docker_compose:
-      project_src: ~/srv/grafana-prometheus/
+      project_src: /home/gregoy/srv/grafana-prometheus/
       files:
       - docker-compose.yml
       recreate: always
