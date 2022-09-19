@@ -33,9 +33,9 @@
   #######################################################
   # Creating a grafana-prometheus directory on the host #
   #######################################################  
-  - name: Create the srv directory if it does not exist
+  - name: Create the grafana-prometheus directory if it does not exist
     ansible.builtin.file:
-      path: ~/srv/grafana-prometheus/
+      path: home/gregory/srv/grafana-prometheus/
       state: directory
       mode: '0777'
     become: true
