@@ -152,7 +152,7 @@
   #######################
   - name: deploy Docker Compose stack on remote server
     docker_compose:
-      project_src: /home/gregoy/srv/grafana-prometheus/
+      project_src: /home/gregory/srv/grafana-prometheus/
       files:
       - docker-compose.yml
       recreate: always
