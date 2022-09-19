@@ -7,7 +7,7 @@ services:
       restart: unless-stopped
       volumes:
         - ./provisioning/datasources:/etc/grafana/provisioning/datasources:rw
-        - grafana-data:/var/lib/grafana
+        - ./grafana-data:/var/lib/grafana
       networks: 
         - web-secure
         - monitoring-stack
