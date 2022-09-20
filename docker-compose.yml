@@ -34,8 +34,8 @@ services:
       image: graylog/graylog:4.3
       #journal and config directories in local NFS share for persistence
       volumes:
-         - /video/graylog/journal:/usr/share/graylog/data/journal
-         - /video/graylog/config:/usr/share/graylog/data/config
+         - ./video/graylog/journal:/usr/share/graylog/data/journal
+         - ./video/graylog/config:/usr/share/graylog/data/config
       environment:
         # CHANGE ME (must be at least 16 characters)!
         - GRAYLOG_PASSWORD_SECRET=laliloe4life
