@@ -26,7 +26,7 @@
   - name: Checkout Git repo in temp directory
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/grafana-prometheus.git'
-      dest: /temp/grafana-prometheus/
+      dest: /temp/
 
   #######################################################
   # Creating a grafana-prometheus directory on the host #
