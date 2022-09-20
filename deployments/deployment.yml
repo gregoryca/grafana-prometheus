@@ -11,14 +11,14 @@
       name: ufw
       state: present
 
-  #########################################
-  # Creating a temp directory on the host #
-  #########################################
-  - name: Create a temp directory if it does not exist
-    ansible.builtin.file:
-      path: /temp/
-      state: directory
-      mode: '0777'
+  # #########################################
+  # # Creating a temp directory on the host #
+  # #########################################
+  # - name: Create a temp directory if it does not exist
+  #   ansible.builtin.file:
+  #     path: /temp/
+  #     state: directory
+  #     mode: '0777'
 
   ######################################
   # Checkout Git Repo for latest code #
