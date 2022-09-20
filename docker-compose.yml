@@ -14,12 +14,73 @@ services:
       labels:
         - "traefik.enable=true"
 
-        # web interface
+       # web interface
         - "traefik.http.routers.grafana-secure.rule=Host(`grafana.cloud-migrations.nl`)"
         - "traefik.http.routers.grafana-secure.tls.certresolver=production"
         - "traefik.http.routers.grafana-secure.tls=true"
         - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
         - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
+       
+    mongodb:
+      image: mongo:3
+      #DB in share for persistence
+      volumes:
+        - /video/graylog/mongodb:/data/db
+      networks: 
+        - web-secure
+        - monitoring-stack
+        
+  graylog:
+      image: graylog/graylog:<version>
+      #journal and config directories in local NFS share for persistence
+      volumes:
+         - /video/graylog/journal:/usr/share/graylog/data/journal
+         - /video/graylog/config:/usr/share/graylog/data/config
+      environment:
+        # CHANGE ME (must be at least 16 characters)!
+        - GRAYLOG_PASSWORD_SECRET=forpasswordencryption
+        # Password: admin
+        - GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+        - GRAYLOG_HTTP_BIND_ADDRESS=0.0.0.0:7555
+        - GRAYLOG_HTTP_EXTERNAL_URI=http://192.168.10.152:7555/
+        - GRAYLOG_TRANSPORT_EMAIL_WEB_INTERFACE_URL=http://192.168.2.3:7555
+        - GRAYLOG_TRANSPORT_EMAIL_HOSTNAME=smtp.example.com
+        - GRAYLOG_TRANSPORT_EMAIL_ENABLED=true
+        - GRAYLOG_TRANSPORT_EMAIL_PORT=25
+        - GRAYLOG_TRANSPORT_EMAIL_USE_AUTH=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_TLS=false
+        - GRAYLOG_TRANSPORT_EMAIL_USE_SSL=false
+        - GRAYLOG_TRANSPORT_FROM_EMAIL=youremail@yourdomain.com
+        - GRAYLOG_TRANSPORT_SUBJECT_PREFIX=[graylog]
+      links:
+        - mongodb:mongo
+        - elasticsearch
+      depends_on:
+        - mongodb
+        - elasticsearch
+      ports:
+        # Graylog web interface and REST API
+        - 7555:7555
+        # Syslog TCP
+        - 8514:8514
+        # Syslog UDP
+        - 8514:8514/udp
+        # GELF TCP
+        - 12201:12201
+        # GELF UDP
+        - 12201:12201/udp
+      networks: 
+        - web-secure
+        - monitoring-stack
+      labels:
+        - "traefik.enable=true"
+
+        # web interface
+        - "traefik.http.routers.graylog-secure.rule=Host(`graylog.cloud-migrations.nl`)"
+        - "traefik.http.routers.graylog-secure.tls.certresolver=production"
+        - "traefik.http.routers.graylog-secure.tls=true"
+        - "traefik.http.routers.graylog-secure.entrypoints=web-secure"
+        - "traefik.http.services.graylog-secure.loadbalancer.server.port=7555" #port to the webservice
 
   elasticsearch:
       image: docker.elastic.co/elasticsearch/elasticsearch:8.4.1
