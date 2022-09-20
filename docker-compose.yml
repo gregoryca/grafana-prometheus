@@ -21,7 +21,7 @@ services:
         - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
         - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
        
-    mongodb:
+  mongodb:
       image: mongo:3
       #DB in share for persistence
       volumes:
