@@ -16,7 +16,7 @@
   #########################################
   - name: Create a temp directory if it does not exist
     ansible.builtin.file:
-      path: /temp/grafana-promteheus/
+      path: /temp/
       state: directory
       mode: '0777'
 
