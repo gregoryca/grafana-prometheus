@@ -31,7 +31,7 @@ services:
         - monitoring-stack
         
   graylog:
-      image: graylog/graylog:<version>
+      image: graylog/graylog:4.3
       #journal and config directories in local NFS share for persistence
       volumes:
          - /video/graylog/journal:/usr/share/graylog/data/journal
