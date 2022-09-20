@@ -11,14 +11,14 @@
       name: ufw
       state: present
 
-  # #########################################
-  # # Creating a temp directory on the host #
-  # #########################################
-  # - name: Create a temp directory if it does not exist
-  #   ansible.builtin.file:
-  #     path: /temp/
-  #     state: directory
-  #     mode: '0777'
+  #########################################
+  # Creating a temp directory on the host #
+  #########################################
+  - name: Create a temp directory if it does not exist
+    ansible.builtin.file:
+      path: /temp/grafana-promteheus/
+      state: directory
+      mode: '0777'
 
   ######################################
   # Checkout Git Repo for latest code #
@@ -26,7 +26,7 @@
   - name: Checkout Git repo in temp directory
     ansible.builtin.git:
       repo: 'https://github.com/gregoryca/grafana-prometheus.git'
-      dest: /temp/
+      dest: /temp/grafana-prometheus/
 
   #######################################################
   # Creating a grafana-prometheus directory on the host #
