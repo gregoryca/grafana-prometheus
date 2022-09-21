@@ -43,22 +43,15 @@ scrape_configs:
     static_configs:
          - targets: ['192.168.2.3:9090']
 
-  #################
-  # node_explorer #
-  #################
+  ##################
+  #  Node-Exporter #
+  ##################
   # Collects metrics about Prometheus
-  - job_name: 'LPT-GRCR'
+  - job_name: 'grafana.node-exporter'
     scrape_interval: 5s
     static_configs:
+         - targets: ['grafana.node-exporter:9100']
          - targets: ['192.168.2.14:9100']
- 
-  #################
-  # node_explorer #
-  #################
-  # Collects metrics about Prometheus
-  - job_name: 'OppervlakPro3'
-    scrape_interval: 5s
-    static_configs:
          - targets: ['192.168.2.3:49664']
  
   ############
@@ -69,24 +62,7 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['grafana.cadvisor:8080']
-
-  ############
-  # Cadvisor #
-  ############
-  # Collects info based on Cadvisor for containers
-  - job_name: LPT-GRCR.cadvisor
-    scrape_interval: 5s
-    static_configs:
       - targets: ['192.168.2.14:8181']
-
-  #################
-  # Node-Exporter #
-  #################
-  # Collects info based on the node exporer
-  - job_name: grafana.node-exporter
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['grafana.node-exporter:9100']
 
 #  - job_name: 'pushgateway'
 #    scrape_interval: 10s
