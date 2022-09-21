@@ -47,7 +47,16 @@ scrape_configs:
   # node_explorer #
   #################
   # Collects metrics about Prometheus
-  - job_name: 'oppervlakpro3'
+  - job_name: 'LPT-GRCR'
+    scrape_interval: 5s
+    static_configs:
+         - targets: ['192.168.2.14:9100']
+ 
+  #################
+  # node_explorer #
+  #################
+  # Collects metrics about Prometheus
+  - job_name: 'OppervlakPro3'
     scrape_interval: 5s
     static_configs:
          - targets: ['192.168.2.3:49664']
