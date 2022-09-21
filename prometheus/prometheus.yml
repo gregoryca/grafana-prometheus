@@ -65,10 +65,19 @@ scrape_configs:
   # Cadvisor #
   ############
   # Collects info based on Cadvisor for containers
-  - job_name: grafana.cadvisor
+  - job_name: server17a.cadvisor
     scrape_interval: 5s
     static_configs:
       - targets: ['grafana.cadvisor:8080']
+
+  ############
+  # Cadvisor #
+  ############
+  # Collects info based on Cadvisor for containers
+  - job_name: LPT-GRCR.cadvisor
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.14:8181']
 
   #################
   # Node-Exporter #
