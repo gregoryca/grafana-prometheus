@@ -52,7 +52,7 @@ scrape_configs:
     static_configs:
          - targets: ['grafana.node-exporter:9100']
          - targets: ['192.168.2.14:9100']
-         - targets: ['192.168.2.3:49664']
+         - targets: ['192.168.2.9:49664']
  
   ############
   # Cadvisor #
