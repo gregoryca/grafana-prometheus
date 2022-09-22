@@ -62,7 +62,7 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['grafana.cadvisor:8080']
-      - targets: ['192.168.2.14:8181']
+      - targets: ['192.168.2.15:8181']
 
 #  - job_name: 'pushgateway'
 #    scrape_interval: 10s
