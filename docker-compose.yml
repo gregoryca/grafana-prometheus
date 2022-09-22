@@ -31,6 +31,7 @@ services:
         - discovery.type=single-node
         - xpack.security.enabled=false
         - xpack.security.enrollment.enabled=true
+        - ES_JAVA_OPTS="-Xmx3000m"
       volumes:
         - ./elasticsearch-data:/usr/share/elasticsearch/data
       networks: 
