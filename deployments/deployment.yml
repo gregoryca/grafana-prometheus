@@ -161,6 +161,8 @@
   # open port 9200 #
   ##################
   - name: Allow all access to port 9200
+    become: yes
+    become_user: root
     ufw:
       rule: allow
       port: '9200'
@@ -169,6 +171,8 @@
   # open port 9090 #
   ##################
   - name: Allow all access to port 9090
+    become: yes
+    become_user: root
     ufw:
       rule: allow
       port: '9090'
@@ -177,6 +181,8 @@
   # open port 9100 #
   ##################
   - name: Allow all access to port 9100
+    become: yes
+    become_user: root
     ufw:
       rule: allow
       port: '9100'
@@ -185,6 +191,8 @@
   # open port 8080 #
   ##################
   - name: Allow all access to port 8080
+    become: yes
+    become_user: root
     ufw:
       rule: allow
       port: '8080'
