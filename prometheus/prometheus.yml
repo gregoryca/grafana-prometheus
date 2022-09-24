@@ -41,7 +41,7 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
-         - targets: ['grafana-prometheus:9090']
+         - targets: ['grafana.prometheus:9090']
 
   ##################
   #  Node-Exporter #
@@ -72,4 +72,4 @@ scrape_configs:
 #      type: 'A'
 #      port: 9091
 #     static_configs:
-#          - targets: ['node-exporter:9100']
+#          - targets: ['grafana.node-exporter:9100']
