@@ -15,7 +15,7 @@ services:
         - "traefik.enable=true"
 
        # web interface
-        - "traefik.http.routers.grafana-secure.rule=Host(`grafana.cloud-migrations.nl`)"
+        - "traefik.http.routers.grafana-secure.rule=Host(`grafana.apex-migrations.net`)"
         - "traefik.http.routers.grafana-secure.tls.certresolver=production"
         - "traefik.http.routers.grafana-secure.tls=true"
         - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
@@ -41,7 +41,7 @@ services:
         - "traefik.enable=true"
 
         # web interface
-        - "traefik.http.routers.elasticsearch-secure.rule=Host(`elasticsearch.cloud-migrations.nl`)"
+        - "traefik.http.routers.elasticsearch-secure.rule=Host(`elasticsearch.apex-migrations.net`)"
         - "traefik.http.routers.elasticsearch-secure.tls.certresolver=production"
         - "traefik.http.routers.elasticsearch-secure.tls=true"
         - "traefik.http.routers.elasticsearch-secure.entrypoints=web-secure"
