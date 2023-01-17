@@ -3,3 +3,6 @@ grafana-data/grafana.db
 grafana-data/alerting/1/__default__.tmpl
 .gitignore
 metricbeat-data/
+deployments/inventory
+.gitignore
+deployments/ansible.cfg

@@ -1,0 +1,36 @@
+---
+- hosts: mgmt-server
+  gather_facts: False
+  tasks:
+
+  #Stopping container
+    - name: Stop the docker container
+      docker_container:
+        name: grafana
+        state: stopped
+
+  #Removing/Deleting container
+    - name: Remove container
+      docker_container:
+        name: grafana
+        state: absent
+
+  #Removing/Deleting Image
+    - name: Remove image
+      docker_image:
+        name: grafana/grafana:latest
+        state: absent
+
+  #Pull latest version Image
+    - name: pull an image
+      docker_image:
+        name: grafana/grafana:latest
+        source: pull
+
+  #deploy compose file
+    - name: deploy Docker Compose stack
+      docker_compose:
+        project_src: ~/srv/grafana-prometheus/
+        files:
+        - docker-compose.yml
+        recreate: always
