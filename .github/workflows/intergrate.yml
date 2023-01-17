@@ -5,7 +5,7 @@ name: Deploy Grafana-Prometheus infra
 
 on:
   push:
-    branches: [ "dev", "development" ]
+    branches: [ "dev", "development", "master" ]
   pull_request:
     branches: [ "master" ]
 
