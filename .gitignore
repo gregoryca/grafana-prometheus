@@ -6,3 +6,14 @@ metricbeat-data/
 deployments/inventory
 .gitignore
 deployments/ansible.cfg
+grafana-data/plugins/grafana-github-datasource/plugin.json
+grafana-data/plugins/grafana-github-datasource/module.js.map
+grafana-data/plugins/grafana-github-datasource/CHANGELOG.md
+grafana-data/plugins/grafana-github-datasource/dashboards/dashboard.json
+grafana-data/plugins/grafana-github-datasource/gfx_github_linux_amd64
+grafana-data/plugins/grafana-github-datasource/dashboards/Github projects-1667481831135.json
+grafana-data/plugins/grafana-github-datasource/img/github.svg
+.github/workflows/intergrate.yml
+grafana-data/plugins/grafana-github-datasource/LICENSE
+grafana-data/plugins/grafana-github-datasource/MANIFEST.txt
+grafana-data/plugins/grafana-github-datasource/module.js
