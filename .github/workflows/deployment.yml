@@ -4,11 +4,6 @@
 name: Deploy Grafana-Prometheus infra
 
 on:
-  push:
-    branches: [ "dev", "development", "master" ]
-  pull_request:
-    branches: [ "master" ]
-
   #################################################################
   # Allows you to run this workflow manually from the Actions tab #
   #################################################################
@@ -16,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       #################################################################################
