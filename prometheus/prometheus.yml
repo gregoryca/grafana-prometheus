@@ -61,9 +61,9 @@ scrape_configs:
     static_configs:
       - targets: ['grafana.cadvisor:8080']
 
-  ############
-  # Cadvisor #
-  ############
+  ###########
+  # Windows #
+  ###########
   # Collects info based on Cadvisor for containers
   - job_name: Windows
     scrape_interval: 5s
