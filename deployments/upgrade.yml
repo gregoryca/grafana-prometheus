@@ -1,6 +1,8 @@
 ---
-- hosts: mgmt-server
-  gather_facts: False
+- hosts: all
+  become: yes
+  become_user: gregory
+  gather_facts: True
   tasks:
 
   #Stopping container
