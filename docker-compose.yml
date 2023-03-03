@@ -20,6 +20,18 @@ services:
         - "traefik.http.routers.grafana-secure.tls=true"
         - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
         - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
+
+  loki:
+    image: grafana/loki:2.7.3
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks: 
+      - monitoring-stack
+    links:
+      - cadvisor:cadvisor
+      - alertmanager:alertmanager
+      - grafana:grafana
       
   elasticsearch:
       image: docker.elastic.co/elasticsearch/elasticsearch:8.4.1
