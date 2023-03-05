@@ -11,8 +11,6 @@ global:
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
   - 'alert.rules'
-  # - "first.rules"
-  # - "second.rules"
 
 # alert
 alerting:
@@ -25,15 +23,6 @@ alerting:
 # Here it's Prometheus itself.
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  ###########
-  # Traefik #
-  ###########
-  # Collects Traefik Metrics configured in the static traefik configuration
-  - job_name: traefik
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['traefik.rproxy:8082']
-
   ##############
   # Prometheus #
   ##############
@@ -41,25 +30,36 @@ scrape_configs:
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
-         - targets: ['grafana.prometheus:9090']
+      - targets: ['grafana.prometheus:9090']
+
+  ###########
+  # Traefik #
+  ###########
+  # Collects Traefik Metrics configured in the static traefik configuration
+  - job_name: 'traefik metrics'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['traefik.rproxy:8080']
 
   ##################
   #  Node-Exporter #
   ##################
-  # Collects metrics about Prometheus
+  # Collects metrics about Pr`ometheus
   - job_name: 'grafana.node-exporter'
     scrape_interval: 5s
     static_configs:
-         - targets: ['grafana.node-exporter:9100']
+      - targets: ['grafana.node-exporter:9100']
  
   ############
   # Cadvisor #
   ############
   # Collects info based on Cadvisor for containers
-  - job_name: server17a.cadvisor
+  - job_name: 'grafana.cadvisor'
     scrape_interval: 5s
+    metrics_path: '/metrics'
     static_configs:
-      - targets: ['192.168.2.100:8080']
+      - targets: ['grafana.cadvisor:8080']
 
   ###########
   # Windows #

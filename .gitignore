@@ -19,3 +19,4 @@ grafana-data/plugins/grafana-github-datasource/MANIFEST.txt
 grafana-data/plugins/grafana-github-datasource/module.js
 grafana-data/plugins/grafana-github-datasource/README.md
 .env
+config/config.yml
