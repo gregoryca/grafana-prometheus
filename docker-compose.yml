@@ -7,7 +7,6 @@ services:
     hostname: grafana
     restart: unless-stopped
     volumes:
-      - ./provisioning/datasources:/etc/grafana/provisioning/datasources:rw
       - ./grafana-data:/var/lib/grafana:rw
     networks: 
       - web-secure
@@ -29,8 +28,8 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./var/log:/var/log
-      - /traefik/logs/
+      - ./var/log:/var/log:rw
+      - /traefik/logs/:/traefik/logs/
     command: -config.file=/etc/loki/local-config.yaml
     networks: 
       - monitoring-stack
@@ -41,7 +40,7 @@ services:
     hostname: grafana.promtail
     volumes:
       - ./var/log:/var/log
-      - /traefik/logs/
+      - /traefik/logs/:/traefik/logs/
       - ./config/:/etc/promtail/
     command: -config.file=/etc/promtail/config.yml
     networks: 

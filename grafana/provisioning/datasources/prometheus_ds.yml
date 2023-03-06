@@ -2,7 +2,7 @@ datasources:
 - name: Prometheus
   access: proxy
   type: prometheus
-  url: http://prometheus:9090
+  url: http://grafana.prometheus:9090
   isDefault: true
 
 - name: GitHub Repo Insights
