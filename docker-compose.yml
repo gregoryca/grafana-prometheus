@@ -6,8 +6,10 @@ services:
     container_name: grafana
     hostname: grafana
     restart: unless-stopped
+    user: "1000"
     volumes:
-      - grafana-data:/var/lib/grafana:rw
+      - grafana-data:/var/lib/grafana
+      - /grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:rw
     networks: 
       - web-secure
       - monitoring-stack
@@ -22,29 +24,32 @@ services:
       - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
 
   loki:
-    image: grafana/loki:latest
+    image: grafana/loki:2.7.3
     container_name: grafana.loki
     hostname: grafana.loki
     ports:
-      - "3100:3100"
+      - 3100:3100
     volumes:
-      - ./var/log:/var/log:rw
-      - /traefik/logs/:/traefik/logs/
-    command: -config.file=/etc/loki/local-config.yaml
+      - ${TRAEFIK_VOLUME}:/logs/
+      - ./config/:/etc/loki/
+    command: -config.file=/etc/loki/loki-config.yml
     networks: 
       - monitoring-stack
+    depends_on:
+      - grafana
 
   promtail:
-    image: grafana/promtail:latest
+    image: grafana/promtail:2.7.3
     container_name: grafana.promtail
     hostname: grafana.promtail
     volumes:
-      - ./var/log:/var/log
-      - /traefik/logs/:/traefik/logs/
+      - ${TRAEFIK_VOLUME}:/logs/
       - ./config/:/etc/promtail/
-    command: -config.file=/etc/promtail/config.yml
+    command: -config.file=/etc/promtail/promtail-config.yml
     networks: 
       - monitoring-stack
+    depends_on:
+      - loki
         
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.1
@@ -120,7 +125,7 @@ services:
 
   node-exporter:
     container_name: grafana.node-exporter
-    image: prom/node-exporter
+    image: prom/node-exporter:latest
     hostname: grafana.node-exporter
     volumes:
       - /proc:/host/proc:ro
@@ -177,3 +182,4 @@ networks:
 
 volumes:
   grafana-data:
+    external: true
