@@ -36,7 +36,6 @@ scrape_configs:
   ###########
   # Collects Traefik Metrics configured in the static traefik configuration
   - job_name: 'traefik metrics'
-    metrics_path: '/metrics'
     scrape_interval: 5s
     static_configs:
       - targets: ['traefik.rproxy:8082']
