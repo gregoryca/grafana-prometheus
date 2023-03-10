@@ -72,7 +72,7 @@ services:
       - "traefik.enable=true"
 
       # web interface
-      - "traefik.http.routers.elasticsearch-secure.rule=Host(`elasticsearch.apex-migrations.net`)"
+      - "traefik.http.routers.elasticsearch-secure.rule=Host(`elasticsearch.apex-migrations.net`) && PathPrefix('/config/v1/agents')"
       - "traefik.http.routers.elasticsearch-secure.tls.certresolver=production"
       - "traefik.http.routers.elasticsearch-secure.tls=true"
       - "traefik.http.routers.elasticsearch-secure.entrypoints=web-secure"
