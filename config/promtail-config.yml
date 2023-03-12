@@ -5,14 +5,14 @@ server:
 positions:
   filename: /tmp/positions.yaml
 
-client:
-  url: http://grafana.loki:3100/api/v1/push
+clients:
+  - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
- - job_name: system
-   static_configs:
-   - targets:
-      - server17a
-     labels:
-        job: traefik
-        __path__: /logs/access.log
+- job_name: traefik_log
+  static_configs:
+  - targets:
+      - loki
+    labels:
+      job: varlogs
+      __path__: /logs/access.log

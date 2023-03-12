@@ -30,7 +30,6 @@ services:
     ports:
       - 3100:3100
     volumes:
-      - ${TRAEFIK_VOLUME}:/logs/
       - ./config/:/etc/loki/
     command: -config.file=/etc/loki/loki-config.yml
     networks: 
@@ -43,8 +42,8 @@ services:
     container_name: grafana.promtail
     hostname: grafana.promtail
     volumes:
-      - ${TRAEFIK_VOLUME}:/logs/
       - ./config/:/etc/promtail/
+      - ${TRAEFIK_VOLUME}:/logs/
     command: -config.file=/etc/promtail/promtail-config.yml
     networks: 
       - monitoring-stack
@@ -183,3 +182,5 @@ networks:
 volumes:
   grafana-data:
     external: true
+
+#https://mpolinowski.github.io/docs/DevOps/Provisioning/2021-04-07--loki-prometheus-grafana/2021-04-07/#configuring-the-services
