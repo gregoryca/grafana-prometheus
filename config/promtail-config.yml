@@ -16,3 +16,9 @@ scrape_configs:
     labels:
       job: traefik_logs
       __path__: /logs/access.log
+
+  - targets:
+      - loki
+    labels:
+      job: traefik.logs
+      __path__: /logs/traefik.log
