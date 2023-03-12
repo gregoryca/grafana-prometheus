@@ -22,3 +22,12 @@ scrape_configs:
     labels:
       job: traefik.logs
       __path__: /logs/traefik.log
+
+  # Nextcloud promtail setup
+  - targets:
+      - loki
+    labels:
+      instance: server17a #hostname -f
+      env: docker #Environment label
+      job: nextcloud.logs #job label
+      __path__: /home/gregory/srv/nextcloud/nextcloud/data/{audit,nextcloud}.log #path
