@@ -11,6 +11,7 @@ clients:
 scrape_configs:
 - job_name: traefik_log
   static_configs:
+  
   - targets:
       - loki
     labels:
@@ -30,4 +31,4 @@ scrape_configs:
       instance: server17a #hostname -f
       env: docker #Environment label
       job: nextcloud.logs #job label
-      __path__: /home/gregory/srv/nextcloud/nextcloud/data/{audit,nextcloud}.log #path
+      __path__: /nextcloud/data/*.log #path
