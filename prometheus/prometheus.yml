@@ -58,22 +58,3 @@ scrape_configs:
     metrics_path: '/metrics'
     static_configs:
       - targets: ['grafana.cadvisor:8080']
-
-  ###########
-  # Windows #
-  ###########
-  # Collects info based on Cadvisor for containers
-  # - job_name: Windows
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['192.168.2.108:9182']
-
-#  - job_name: 'pushgateway'
-#    scrape_interval: 10s
-#    dns_sd_configs:
-#    - names:
-#      - 'tasks.pushgateway'
-#      type: 'A'
-#      port: 9091
-#     static_configs:
-#          - targets: ['grafana.node-exporter:9100']
