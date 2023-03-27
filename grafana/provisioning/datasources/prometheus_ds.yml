@@ -1,0 +1,14 @@
+datasources:
+- name: Prometheus
+  access: proxy
+  type: prometheus
+  url: http://grafana.prometheus:9090
+  isDefault: true
+
+- name: GitHub Repo Insights
+  type: grafana-github-datasource
+  jsonData:
+      owner: "gregoryca"
+      repository: "Nextcloud"
+  secureJsonData:
+      accessToken: "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"

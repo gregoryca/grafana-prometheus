@@ -1,0 +1,30 @@
+#https://mpolinowski.github.io/docs/DevOps/Provisioning/2021-04-07--loki-prometheus-grafana/2021-04-07/#configuring-the-services
+
+# kibana:
+#   image: kibana:8.4.1
+#   container_name: grafana.kibana
+#   restart: unless-stopped
+#   ports:
+#     - 5601:5601
+#   networks: 
+#     - web-secure
+#   labels:
+#     - "traefik.enable=true"
+
+#     # web interface
+#     - "traefik.http.routers.kibana-secure.rule=Host(`kibana.cloud-migrations.nl`)"
+#     - "traefik.http.routers.kibana-secure.tls.certresolver=production"
+#     - "traefik.http.routers.kibana-secure.tls=true"
+#     - "traefik.http.routers.kibana-secure.entrypoints=web-secure"
+#     - "traefik.http.services.kibana-secure.loadbalancer.server.port=5601" #port to the webservice
+
+# metricbeat:
+#   image: docker.elastic.co/beats/metricbeat:7.11.1
+#   restart: unless-stopped
+#   container_name: grafana.metricbeat
+#   environment:
+#     - KIBANA_HOST=http://localhost:9200
+#   volumes:
+#     - ./metricbeat-data:/usr/share/metricbeat/data/
+#   networks:
+#     - web-secure

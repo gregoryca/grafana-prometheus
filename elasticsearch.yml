@@ -1,0 +1,14 @@
+cluster.name: Elasticsearch
+node.name: master
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: 0.0.0.0
+discovery.seed_hosts: []
+cluster.initial_master_nodes: []
+xpack.security.enabled: false
+xpack.security.transport.ssl.enabled: false
+xpack.security.transport.ssl.verification_mode: certification
+xpack.security.transport.ssl.keystore.path: /etc/pki/tls/certs/elasticsearch-certificates.p12
+xpack.security.transport.ssl.truststore.path: /etc/pki/tls/certs/elasticsearch-certificates.p12
+
+discovery.type: single-node

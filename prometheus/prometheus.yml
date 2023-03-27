@@ -1,0 +1,79 @@
+global:
+  scrape_interval:     5s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 5s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'Apex-Migrations Lab'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - 'alert.rules'
+
+# alert
+alerting:
+  alertmanagers:
+  - scheme: http
+    static_configs:
+    - targets:
+      - "alertmanager:9093"
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  ##############
+  # Prometheus #
+  ##############
+  # Collects metrics about Prometheus
+  - job_name: 'prometheus'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['grafana.prometheus:9090']
+
+  ###########
+  # Traefik #
+  ###########
+  # Collects Traefik Metrics configured in the static traefik configuration
+  - job_name: 'traefik metrics'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['traefik.rproxy:8082']
+
+  ##################
+  #  Node-Exporter #
+  ##################
+  # Collects metrics about Pr`ometheus
+  - job_name: 'grafana.node-exporter'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['grafana.node-exporter:9100']
+ 
+  ############
+  # Cadvisor #
+  ############
+  # Collects info based on Cadvisor for containers
+  - job_name: 'grafana.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['grafana.cadvisor:8080']
+
+  ###########
+  # Windows #
+  ###########
+  # Collects info based on Cadvisor for containers
+  # - job_name: Windows
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['192.168.2.108:9182']
+
+#  - job_name: 'pushgateway'
+#    scrape_interval: 10s
+#    dns_sd_configs:
+#    - names:
+#      - 'tasks.pushgateway'
+#      type: 'A'
+#      port: 9091
+#     static_configs:
+#          - targets: ['grafana.node-exporter:9100']

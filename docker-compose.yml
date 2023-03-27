@@ -1,0 +1,157 @@
+version: "3"
+# More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    hostname: grafana
+    restart: unless-stopped
+    user: "1000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - /grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:rw
+    networks: 
+      - web-secure
+      - monitoring-stack
+    labels:
+      - "traefik.enable=true"
+
+      # web interface
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.apex-migrations.net`)"
+      - "traefik.http.routers.grafana-secure.tls.certresolver=production"
+      - "traefik.http.routers.grafana-secure.tls=true"
+      - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
+      - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
+
+  loki:
+    image: grafana/loki:2.7.3
+    container_name: grafana.loki
+    hostname: grafana.loki
+    restart: unless-stopped
+    ports:
+      - 3100:3100
+    volumes:
+      - ./config/:/etc/loki/
+    command: -config.file=/etc/loki/loki-config.yml
+    networks: 
+      - monitoring-stack
+    depends_on:
+      - grafana
+
+  promtail:
+    image: grafana/promtail:2.7.3
+    container_name: grafana.promtail
+    hostname: grafana.promtail
+    restart: unless-stopped
+    volumes:
+      - ./config/:/etc/promtail/
+      - ${TRAEFIK_VOLUME}:/logs/
+    command: -config.file=/etc/promtail/promtail-config.yml
+    networks: 
+      - monitoring-stack
+    depends_on:
+      - loki
+        
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.1
+    container_name: grafana.elasticsearch
+    hostname: grafana.elasticsearch
+    restart: unless-stopped
+    ports:
+      - 9200:9200
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=true
+      - ES_JAVA_OPTS=-Xmx3000m
+    volumes:
+      - ./elasticsearch-data:/usr/share/elasticsearch/data
+    networks: 
+      - web-secure
+      - monitoring-stack
+    labels:
+      - "traefik.enable=true"
+
+      # web interface
+      - "traefik.http.routers.elasticsearch-secure.rule=Host(`elasticsearch.apex-migrations.net`) && PathPrefix(`/config/v1/agents`)"
+      - "traefik.http.routers.elasticsearch-secure.tls.certresolver=production"
+      - "traefik.http.routers.elasticsearch-secure.tls=true"
+      - "traefik.http.routers.elasticsearch-secure.entrypoints=web-secure"
+      - "traefik.http.services.elasticsearch-secure.loadbalancer.server.port=9200" #port to the webservice
+
+  prometheus:
+    image: prom/prometheus
+    container_name: grafana.prometheus
+    hostname: grafana.prometheus
+    restart: always
+    volumes:
+      - ./prometheus:/etc/prometheus/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks: 
+      - monitoring-stack
+      - web-secure
+
+  node-exporter:
+    container_name: grafana.node-exporter
+    image: prom/node-exporter:latest
+    hostname: grafana.node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
+    ports:
+      - 9100:9100
+    networks: 
+      - monitoring-stack
+    restart: always
+    deploy:
+      mode: global
+
+  alertmanager:
+    container_name: grafana.alertmanager
+    image: prom/alertmanager
+    hostname: grafana.alertmanager
+    restart: always
+    ports:
+      - 9093:9093
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/
+    networks: 
+      - monitoring-stack
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'
+      - '--storage.path=/alertmanager'
+
+  cadvisor:
+    container_name: grafana.cadvisor
+    image: gcr.io/cadvisor/cadvisor
+    hostname: grafana.cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
+    deploy:
+      mode: global
+    networks: 
+      - monitoring-stack
+
+networks: 
+  web-secure:
+    external: true
+  monitoring-stack:
+    external: true
+
+volumes:
+  grafana-data:
+    external: true
