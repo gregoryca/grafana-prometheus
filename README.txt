@@ -13,3 +13,5 @@ NEXTCLOUDLog=/path/to/the/nextcloud/log/
 accessToken=github access token
 
 after the .env file has been created, perform an "docker-compose up -d" and the stack should be created.
+
+The ELK stack can be found in the document: "ELK STACK", and should be renamed to "docker-compose.yml" if you want to use the elk stack instead of using promtail, prometheus and loki.
