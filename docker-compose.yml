@@ -10,18 +10,9 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
       - /grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:rw
-    networks: 
+    networks:
       - web-secure
       - monitoring-stack
-    labels:
-      - "traefik.enable=true"
-
-      # web interface
-      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.apex-migrations.net`)"
-      - "traefik.http.routers.grafana-secure.tls.certresolver=production"
-      - "traefik.http.routers.grafana-secure.tls=true"
-      - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
-      - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
 
   loki:
     image: grafana/loki:2.7.3
@@ -33,7 +24,7 @@ services:
     volumes:
       - ./config/:/etc/loki/
     command: -config.file=/etc/loki/loki-config.yml
-    networks: 
+    networks:
       - monitoring-stack
     depends_on:
       - grafana
@@ -47,11 +38,11 @@ services:
       - ./config/:/etc/promtail/
       - ${TRAEFIK_VOLUME}:/logs/
     command: -config.file=/etc/promtail/promtail-config.yml
-    networks: 
+    networks:
       - monitoring-stack
     depends_on:
       - loki
-        
+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.4.1
     container_name: grafana.elasticsearch
@@ -66,7 +57,7 @@ services:
       - ES_JAVA_OPTS=-Xmx3000m
     volumes:
       - ./elasticsearch-data:/usr/share/elasticsearch/data
-    networks: 
+    networks:
       - web-secure
       - monitoring-stack
     labels:
@@ -91,9 +82,11 @@ services:
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/usr/share/prometheus/console_libraries'
       - '--web.console.templates=/usr/share/prometheus/consoles'
-    networks: 
+    networks:
       - monitoring-stack
       - web-secure
+    ports:
+      - 9090:9090
 
   node-exporter:
     container_name: grafana.node-exporter
@@ -110,7 +103,7 @@ services:
       - '^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)'
     ports:
       - 9100:9100
-    networks: 
+    networks:
       - monitoring-stack
     restart: always
     deploy:
@@ -125,7 +118,7 @@ services:
       - 9093:9093
     volumes:
       - ./alertmanager/:/etc/alertmanager/
-    networks: 
+    networks:
       - monitoring-stack
     command:
       - '--config.file=/etc/alertmanager/config.yml'
@@ -143,10 +136,10 @@ services:
     restart: always
     deploy:
       mode: global
-    networks: 
+    networks:
       - monitoring-stack
 
-networks: 
+networks:
   web-secure:
     external: true
   monitoring-stack:
