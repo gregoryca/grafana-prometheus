@@ -15,13 +15,13 @@ scrape_configs:
   - targets:
       - loki
     labels:
-      job: traefik_logs
+      job: traefik_access_logs
       __path__: /logs/access.log
 
   - targets:
       - loki
     labels:
-      job: traefik.logs
+      job: traefik_logs
       __path__: /logs/traefik.log
 
   # Nextcloud promtail setup

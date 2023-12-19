@@ -44,3 +44,5 @@ grafana-data/plugins/grafana-piechart-panel/img/piechart-legend-under.png
 grafana-data/plugins/grafana-piechart-panel/img/piechart-options.png
 grafana-data/plugins/grafana-piechart-panel/styles/dark.css
 grafana-data/plugins/grafana-piechart-panel/styles/light.css
+/oncall_data
+/redis_data

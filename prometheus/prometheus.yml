@@ -53,8 +53,8 @@ scrape_configs:
   # Cadvisor #
   ############
   # Collects info based on Cadvisor for containers
-  - job_name: 'grafana.cadvisor'
-    scrape_interval: 5s
-    metrics_path: '/metrics'
-    static_configs:
-      - targets: ['grafana.cadvisor:8080']
+  # - job_name: 'grafana.cadvisor'
+  #   scrape_interval: 5s
+  #   metrics_path: '/metrics'
+  #   static_configs:
+  #     - targets: ['grafana.cadvisor:8080']
