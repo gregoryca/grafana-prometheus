@@ -38,7 +38,7 @@ services:
       - 3000:3000
 
   engine:
-    image: grafana/oncall
+    image: grafana/oncall:latest
     container_name: grafana.engine
     hostname: grafana.engine
     restart: always
@@ -57,7 +57,7 @@ services:
       - monitoring-stack
 
   celery:
-    image: grafana/oncall
+    image: grafana/oncall:latest
     restart: always
     container_name: grafana.celery
     hostname: grafana.celery
@@ -76,7 +76,7 @@ services:
       - monitoring-stack
 
   oncall_db_migration:
-    image: grafana/oncall
+    image: grafana/oncall:latest
     command: python manage.py migrate --noinput
     environment: *oncall-environment
     volumes:
