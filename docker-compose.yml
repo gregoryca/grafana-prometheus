@@ -115,28 +115,28 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
 
-  # redis:
-  #   image: redis:7.0.5
-  #   restart: always
-  #   container_name: grafana.redis
-  #   command: "redis-server --requirepass '' "
-  #   ports:
-  #     - 6380:6379
-  #   volumes:
-  #     - ./redis_data:/data
-  #   deploy:
-  #     resources:
-  #       limits:
-  #         memory: 500m
-  #         cpus: "0.5"
-  #   healthcheck:
-  #     test: ["CMD", "redis-cli", "ping"]
-  #     timeout: 5s
-  #     interval: 5s
-  #     retries: 10
-  #   networks:
-  #     - monitoring-stack
-  #     - web-secure
+  redis:
+    image: redis:7.0.5
+    restart: always
+    container_name: grafana.redis
+    command: "redis-server --requirepass '' "
+    ports:
+      - 6380:6379
+    volumes:
+      - ./redis_data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 500m
+          cpus: "0.5"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      timeout: 5s
+      interval: 5s
+      retries: 10
+    networks:
+      - monitoring-stack
+      - web-secure
 
   # cadvisor:
   #   container_name: grafana.cadvisor
