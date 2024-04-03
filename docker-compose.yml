@@ -1,4 +1,3 @@
-version: "3"
 services:
   grafana:
     image: grafana/grafana:latest
@@ -18,6 +17,23 @@ services:
       - monitoring-stack
     ports:
       - 3000:3000
+
+  influxdb:
+    container_name: grafana.influxdb
+    image: influxdb:latest
+    # ports:
+    #   - '8086:8086'
+    volumes:
+      - /influxdb-storage:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=db0
+      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
+      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
+    networks:
+      - web-secure
+      - monitoring-stack
+    depends_on:
+      - grafana
 
   loki:
     image: grafana/loki:2.7.3
