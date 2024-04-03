@@ -35,6 +35,23 @@ services:
     depends_on:
       - grafana
 
+  telegraf:
+    container_name: grafana.telegraf
+    image: telegraf:1.18-alpine
+    volumes:
+    - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    depends_on:
+      - influxdb
+    environment:
+      - INFLUX_TOKEN=oMWk-FV35z-Pvq1jXYm_IEuidDe46R6RZXe674YM0bJpqybx_YgPK7OcgrMfZV33gkSOm-HSbSZQWSU2vPsAcA==
+    links:
+      - influxdb
+    # ports:
+    # - '127.0.0.1:8125:8125/udp'
+    networks:
+      - web-secure
+      - monitoring-stack
+
   loki:
     image: grafana/loki:2.7.3
     container_name: grafana.loki
