@@ -4,8 +4,6 @@ services:
     container_name: grafana
     hostname: grafana
     restart: always
-    dns:
-      - 192.168.2.100
     user: "1000"
     volumes:
       - grafana-data:/var/lib/grafana
@@ -56,8 +54,6 @@ services:
     image: grafana/loki:2.7.3
     container_name: grafana.loki
     hostname: grafana.loki
-    dns:
-      - 192.168.2.100
     restart: unless-stopped
     ports:
       - 3100:3100
@@ -75,8 +71,6 @@ services:
     container_name: grafana.promtail
     hostname: grafana.promtail
     restart: unless-stopped
-    dns:
-      - 192.168.2.100
     ports:
       - 9080:9080
     volumes:
@@ -93,8 +87,6 @@ services:
     image: prom/prometheus
     container_name: grafana.prometheus
     hostname: grafana.prometheus
-    dns:
-      - 192.168.2.100
     restart: unless-stopped
     volumes:
       - ./prometheus:/etc/prometheus/
@@ -134,8 +126,6 @@ services:
     container_name: grafana.alertmanager
     image: prom/alertmanager
     hostname: grafana.alertmanager
-    dns:
-      - 192.168.2.100
     restart: unless-stopped
     ports:
       - 9093:9093
