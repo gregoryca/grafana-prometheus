@@ -13,8 +13,17 @@ services:
       - web-secure
       - redis
       - monitoring-stack
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
+    labels:
+      - "traefik.enable=true"
+
+      # web interface
+      - "traefik.http.routers.grafana-secure.rule=Host(`grafana.apex-migrations.net`)"
+      - "traefik.http.routers.grafana-secure.tls.certresolver=production"
+      - "traefik.http.routers.grafana-secure.tls=true"
+      - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
+      - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
 
   influxdb:
     container_name: grafana.influxdb
@@ -137,29 +146,6 @@ services:
     command:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
-
-  redis:
-    image: redis:7.0.5
-    restart: always
-    container_name: grafana.redis
-    command: "redis-server --requirepass '' "
-    ports:
-      - 6380:6379
-    volumes:
-      - ./redis_data:/data
-    deploy:
-      resources:
-        limits:
-          memory: 500m
-          cpus: "0.5"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      timeout: 5s
-      interval: 5s
-      retries: 10
-    networks:
-      - monitoring-stack
-      - web-secure
 
   # cadvisor:
   #   container_name: grafana.cadvisor
