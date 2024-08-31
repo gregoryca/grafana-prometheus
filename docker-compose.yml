@@ -11,10 +11,7 @@ services:
       - ./config/:/etc/grafana/
     networks:
       - web-secure
-      - redis
       - monitoring-stack
-    # ports:
-    #   - 3000:3000
     labels:
       - "traefik.enable=true"
 
@@ -174,7 +171,7 @@ networks:
 
 volumes:
   grafana-data:
-    external: true
+    external: false
   oncall_data:
     external: false
   redis_data:
