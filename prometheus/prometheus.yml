@@ -49,25 +49,13 @@ scrape_configs:
     static_configs:
       - targets: ['grafana.node-exporter:9100']
 
-  - job_name: 'grafana.home-assistant'
+  - job_name: 'infrastructure'
     scrape_interval: 5s
     static_configs:
-      - targets: ['100.64.0.4:9100']
-
-  - job_name: 'Prometheus.pve'
-    scrape_interval: 5s
-    static_configs:
+      - targets: ['192.168.2.114:9100']
       - targets: ['192.168.2.120:9100']
-
-  - job_name: 'grafana.vps'
-    scrape_interval: 5s
-    static_configs:
       - targets: ['100.64.0.5:9100']
-
-  - job_name: 'grafana.nextcloud'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['192.168.2.103:9200']
+      - targets: ['192.168.2.116:9200']
 
   ############
   # Cadvisor #
