@@ -54,20 +54,25 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.2.114:9100']
 
+  - job_name: 'nextcloud'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.131:9100']
+
   - job_name: 'pve'
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.2.120:9100']
 
-  - job_name: 'vps'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['100.64.0.5:9100']
+  # - job_name: 'vps'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['100.64.0.5:9100']
 
-  - job_name: 'nextcloud'
+  - job_name: 'vm-01'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.131:9200']
+      - targets: ['192.168.2.141:9100']
 
   ############
   # Cadvisor #
