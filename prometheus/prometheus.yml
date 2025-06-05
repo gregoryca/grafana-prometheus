@@ -57,22 +57,22 @@ scrape_configs:
   - job_name: 'nextcloud'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.131:9100']
+      - targets: ['nextcloud.headscale.node:9100']
 
   - job_name: 'pve'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.120:9100']
+      - targets: ['proxmox.headscale.node:9100']
 
   - job_name: 'pihole'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.101:9100']
+      - targets: ['pihole.headscale.node:9100']
 
   - job_name: 'vm-01'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.123:9100']
+      - targets: ['vm-01.headscale.node:9100']
 
   ############
   # Cadvisor #
