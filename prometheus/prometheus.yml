@@ -44,6 +44,21 @@ scrape_configs:
   #  Node-Exporter #
   ##################
   # Collects metrics about Prometheus
+  - job_name: 'pve'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['proxmox.headscale.node:9100']
+
+  - job_name: 'nextcloud'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['nextcloud.headscale.node:9100']
+
+  - job_name: 'pihole'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['pihole.headscale.node:9100']
+
   - job_name: 'server17a'
     scrape_interval: 5s
     static_configs:
@@ -54,32 +69,17 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.2.114:9100']
 
-  - job_name: 'nextcloud'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['nextcloud.headscale.node:9100']
-
-  - job_name: 'pve'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['proxmox.headscale.node:9100']
-
-  - job_name: 'pihole'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['pihole.headscale.node:9100']
-
-  - job_name: 'vm-01'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['vm-01.headscale.node:9100']
+  # - job_name: 'vm-01'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['vm-01.headscale.node:9100']
 
   ############
   # Cadvisor #
   ############
-  # Collects info based on Cadvisor for containers
-  # - job_name: 'grafana.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['grafana.cadvisor:8080']
+  #Collects info based on Cadvisor for containers
+  - job_name: 'grafana.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['grafana.cadvisor:8080']
