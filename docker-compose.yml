@@ -144,22 +144,22 @@ services:
       - '--config.file=/etc/alertmanager/config.yml'
       - '--storage.path=/alertmanager'
 
-  # cadvisor:
-  #   container_name: grafana.cadvisor
-  #   image: gcr.io/cadvisor/cadvisor
-  #   hostname: grafana.cadvisor
-  #   dns:
-  #     - 192.168.2.100
-  #   restart: unless-stopped
-  #   volumes:
-  #     - /:/rootfs:ro
-  #     - /var/run:/var/run:rw
-  #     - /sys:/sys:ro
-  #     - /var/lib/docker/:/var/lib/docker:ro
-  #   deploy:
-  #     mode: global
-  #   networks:
-  #     - monitoring-stack
+  cadvisor:
+    container_name: grafana.cadvisor
+    image: gcr.io/cadvisor/cadvisor
+    hostname: grafana.cadvisor
+    dns:
+      - 192.168.2.100
+    restart: unless-stopped
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    deploy:
+      mode: global
+    networks:
+      - monitoring-stack
 
 networks:
   web-secure:
