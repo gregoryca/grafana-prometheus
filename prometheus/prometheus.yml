@@ -10,15 +10,14 @@ global:
 
 # Load and evaluate rules in this file every 'evaluation_interval' seconds.
 rule_files:
-  - 'alert.rules'
+  - 'alert.rules.yml'
 
 # alert
 alerting:
   alertmanagers:
   - scheme: http
     static_configs:
-    - targets:
-      - "alertmanager:9093"
+      - targets: ['alertmanager:9093']
 
 scrape_configs:
   # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
@@ -43,7 +42,7 @@ scrape_configs:
   ##################
   #  Node-Exporter #
   ##################
-  # Collects metrics about Prometheus
+  # Collects metrics about Prometheus using Node-Exporter
   - job_name: 'pve'
     scrape_interval: 5s
     static_configs:
@@ -77,9 +76,33 @@ scrape_configs:
   ############
   # Cadvisor #
   ############
-  #Collects info based on Cadvisor for containers
+  # Collects info based on Cadvisor for containers
   - job_name: 'grafana.cadvisor'
     scrape_interval: 5s
     metrics_path: '/metrics'
     static_configs:
       - targets: ['grafana.cadvisor:8080']
+
+  - job_name: 'proxmox.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['proxmox.headscale.node:8080']
+
+  - job_name: 'nextcloud.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['nextcloud.headscale.node:8090']
+
+  - job_name: 'pihole.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['pihole.headscale.node:8080']
+
+  - job_name: 'vps.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['dc-srv-01.apex-migrations.net:8080']
