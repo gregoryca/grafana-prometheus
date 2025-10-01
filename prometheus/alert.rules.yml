@@ -1,0 +1,183 @@
+groups:
+- name: server17a
+  rules:
+  # https://samber.github.io/awesome-prometheus-alerts/rules.html
+  # Alert for any instance that is unreachable for >5 minutes.
+  - alert: service_down
+    expr: up == 0
+    for: 5m
+    labels:
+      severity: page
+    annotations:
+      summary: "Instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 5 minutes."
+
+  # Alert for any instance that is unreachable for >5 minutes.
+  # - alert: CPU_BUSY
+  #   expr: node_load5 > 4
+  #   for: 5m
+  #   labels:
+  #     severity: page
+  #   annotations:
+  #     summary: "Instance {{ $labels.instance }} CPU_BUSY"
+  #     description: "{{ $labels.instance }} of job {{ $labels.job }} has been hammering the CPU for more than 5 minutes."
+
+  # - alert: high_load_cpu
+  #   expr: node_load1 > 4
+  #   for: 2m
+  #   labels:
+  #     severity: page
+  #   annotations:
+  #     summary: "Instance {{ $labels.instance }} under high load"
+  #     description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+
+  - alert: HostUnusualNetworkThroughputIn
+    expr: ((rate(node_network_receive_bytes_total[5m]) / on(instance, device) node_network_speed_bytes) > .80)
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual network throughput in (instance {{ $labels.instance }})
+      description: "Host receive bandwidth is high (>80%).\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostUnusualDiskReadRate
+    expr: (rate(node_disk_io_time_seconds_total[5m]) > .80)
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk read rate (instance {{ $labels.instance }})
+      description: "Disk is too busy (IO wait > 80%)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # Please add ignored mountpoints in node_exporter parameters like
+  # "--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|run)($|/)".
+  # Same rule using "node_filesystem_free_bytes" will fire when disk fills for non-root users.
+  - alert: HostOutOfDiskSpace
+    expr: (node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < .10 and on (instance, device, mountpoint) node_filesystem_readonly == 0)
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: Host out of disk space (instance {{ $labels.instance }})
+      description: "Disk is almost full (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostUnusualDiskReadLatency
+    expr: (rate(node_disk_read_time_seconds_total[1m]) / rate(node_disk_reads_completed_total[1m]) > 0.1 and rate(node_disk_reads_completed_total[1m]) > 0)
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk read latency (instance {{ $labels.instance }})
+      description: "Disk latency is growing (read operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostUnusualDiskWriteLatency
+    expr: (rate(node_disk_write_time_seconds_total[1m]) / rate(node_disk_writes_completed_total[1m]) > 0.1 and rate(node_disk_writes_completed_total[1m]) > 0)
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk write latency (instance {{ $labels.instance }})
+      description: "Disk latency is growing (write operations > 100ms)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostHighCpuLoad
+    expr: 1 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m]))) > .80
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host high CPU load (instance {{ $labels.instance }})
+      description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # You may want to increase the alert manager 'repeat_interval' for this type of alert to daily or weekly
+  - alert: HostCpuIsUnderutilized
+    expr: (min by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1h]))) > 0.8
+    for: 1w
+    labels:
+      severity: info
+    annotations:
+      summary: Host CPU is underutilized (instance {{ $labels.instance }})
+      description: "CPU load has been < 20% for 1 week. Consider reducing the number of CPUs.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostCpuStealNoisyNeighbor
+    expr: avg by(instance) (rate(node_cpu_seconds_total{mode="steal"}[5m])) * 100 > 10
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host CPU steal noisy neighbor (instance {{ $labels.instance }})
+      description: "CPU steal is > 10%. A noisy neighbor is killing VM performances or a spot instance may be out of credit.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostUnusualDiskIo
+    expr: rate(node_disk_io_time_seconds_total[5m]) > 0.8
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host unusual disk IO (instance {{ $labels.instance }})
+      description: "Disk usage >80%. Check storage for issues or increase IOPS capabilities. Check storage for issues.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostSystemdServiceCrashed
+    expr: (node_systemd_unit_state{state="failed"} == 1)
+    for: 0m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host systemd service crashed (instance {{ $labels.instance }})
+      description: "systemd service crashed\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: HostPhysicalComponentTooHot
+    expr: node_hwmon_temp_celsius > node_hwmon_temp_max_celsius
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: Host physical component too hot (instance {{ $labels.instance }})
+      description: "Physical hardware component too hot\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+### Container Rules
+
+  - alert: ContainerHighCpuUtilization
+    expr: (sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod, container) / sum(container_spec_cpu_quota{container!=""}/container_spec_cpu_period{container!=""}) by (pod, container) * 100) > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container High CPU utilization (instance {{ $labels.instance }})
+      description: "Container CPU utilization is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # See https://medium.com/faun/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d
+  - alert: ContainerHighMemoryUsage
+    expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container High Memory usage (instance {{ $labels.instance }})
+      description: "Container Memory usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: ContainerVolumeUsage
+    expr: (1 - (sum(container_fs_inodes_free{name!=""}) BY (instance) / sum(container_fs_inodes_total) BY (instance))) * 100 > 80
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: Container Volume usage (instance {{ $labels.instance }})
+      description: "Container Volume usage is above 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: ContainerLowCpuUtilization
+    expr: (sum(rate(container_cpu_usage_seconds_total{container!=""}[5m])) by (pod, container) / sum(container_spec_cpu_quota{container!=""}/container_spec_cpu_period{container!=""}) by (pod, container) * 100) < 20
+    for: 7d
+    labels:
+      severity: info
+    annotations:
+      summary: Container Low CPU utilization (instance {{ $labels.instance }})
+      description: "Container CPU utilization is under 20% for 1 week. Consider reducing the allocated CPU.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: ContainerLowMemoryUsage
+    expr: (sum(container_memory_working_set_bytes{name!=""}) BY (instance, name) / sum(container_spec_memory_limit_bytes > 0) BY (instance, name) * 100) < 20
+    for: 7d
+    labels:
+      severity: info
+    annotations:
+      summary: Container Low Memory usage (instance {{ $labels.instance }})
+      description: "Container Memory usage is under 20% for 1 week. Consider reducing the allocated memory.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
