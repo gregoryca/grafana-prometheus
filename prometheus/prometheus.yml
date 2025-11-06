@@ -48,6 +48,16 @@ scrape_configs:
     static_configs:
       - targets: ['proxmox.headscale.node:9100']
 
+  - job_name: 'pve-2'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['proxmox-02.headscale.node:9100']
+
+  - job_name: 'pve-3'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['proxmox-03.headscale.node:9100']
+
   - job_name: 'nextcloud'
     scrape_interval: 5s
     static_configs:
