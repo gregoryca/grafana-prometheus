@@ -46,42 +46,48 @@ scrape_configs:
   - job_name: 'pve'
     scrape_interval: 5s
     static_configs:
-      - targets: ['proxmox.headscale.node:9100']
+      - targets: ['192.168.2.120:9100']
 
   - job_name: 'pve-2'
     scrape_interval: 5s
     static_configs:
-      - targets: ['proxmox-02.headscale.node:9100']
+      - targets: ['192.168.2.100:9100']
 
   - job_name: 'pve-3'
     scrape_interval: 5s
     static_configs:
-      - targets: ['proxmox-03.headscale.node:9100']
+      - targets: ['192.168.2.190:9100']
 
   - job_name: 'nextcloud'
     scrape_interval: 5s
     static_configs:
-      - targets: ['nextcloud.headscale.node:9100']
+      - targets: ['192.168.2.131:9100']
 
-  - job_name: 'pihole'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['pihole.headscale.node:9100']
+  # - job_name: 'pihole'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['pihole.headscale.node:9100']
 
-  - job_name: 'server17a'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['grafana.node-exporter:9100']
 
   - job_name: 'home-assistant'
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.2.114:9100']
 
-  # - job_name: 'vm-01'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['vm-01.headscale.node:9100']
+  - job_name: 'node-01'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.143:9100']
+
+  - job_name: 'node-02'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.144:9100']
+
+  - job_name: 'node-03'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.2.145:9100']
 
   ############
   # Cadvisor #
