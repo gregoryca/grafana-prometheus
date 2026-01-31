@@ -53,25 +53,25 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.2.100:9100']
 
-  - job_name: 'pve03-server'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['192.168.2.190:9100']
+  # - job_name: 'pve03-server'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['192.168.2.190:9100']
 
   - job_name: 'nextcloud-vm'
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.2.131:9100']
 
-  - job_name: 'homeassistant-green'
-    scrape_interval: 5s
-    static_configs:
-      - targets: ['192.168.2.114:9100']
+  # - job_name: 'homeassistant-green'
+  #   scrape_interval: 5s
+  #   static_configs:
+  #     - targets: ['192.168.2.114:9100']
 
   - job_name: 'devops-vm'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.114:9100']
+      - targets: ['192.168.2.141:9100']
 
   - job_name: 'node01'
     scrape_interval: 5s
