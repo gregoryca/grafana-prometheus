@@ -22,6 +22,8 @@ services:
       - "traefik.http.routers.grafana-secure.entrypoints=web-secure"
       - "traefik.http.services.grafana-secure.loadbalancer.server.port=3000" #port to the webservice
 
+      - "traefik.http.routers.grafana-secure.middlewares=geoblock@file"
+      
   influxdb:
     container_name: grafana.influxdb
     image: influxdb:latest
