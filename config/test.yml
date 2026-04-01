@@ -1,0 +1,32 @@
+local.file_match "traefik_logging" {
+        path_targets = [{
+                __address__ = "loki",
+                __path__    = "/logs/access.log",
+                job         = "traefik_access_logs",
+        }
+        
+        {
+                __address__ = "loki",
+                __path__    = "/logs/traefik.log",
+                job         = "traefik_logs",
+        }, {
+                __address__ = "loki",
+                __path__    = "/nextcloud/data/*.log",
+                env         = "docker",
+                instance    = "server17a",
+                job         = "nextcloud.logs",
+        }]
+}
+
+loki.source.file "traefik_logging" {
+        targets               = local.file_match.traefik_logging.targets
+        forward_to            = [loki.write.default.receiver]
+        legacy_positions_file = "/tmp/positions.yaml"
+}
+
+loki.write "default" {
+        endpoint {
+                url = "http://loki:3100/loki/api/v1/push"
+        }
+        external_labels = {}
+}
