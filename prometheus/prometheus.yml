@@ -92,32 +92,20 @@ scrape_configs:
   # Cadvisor #
   ############
   # # Collects info based on Cadvisor for containers
-  # - job_name: 'grafana.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['grafana.cadvisor:8080']
+  - job_name: 'devops.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['grafana.cadvisor:8080']
 
-  # - job_name: 'proxmox.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['proxmox.headscale.node:8090']
+  - job_name: 'nextcloud.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['nextcloud.headscale.node:8090']
 
-  # - job_name: 'nextcloud.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['nextcloud.headscale.node:8090']
-
-  # - job_name: 'pihole.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['pihole.headscale.node:8080']
-
-  # - job_name: 'vps.cadvisor'
-  #   scrape_interval: 5s
-  #   metrics_path: '/metrics'
-  #   static_configs:
-  #     - targets: ['dc-srv-01.apex-migrations.net:8080']
+  - job_name: 'vps.cadvisor'
+    scrape_interval: 5s
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['dc-srv-01.apex-migrations.net:8080']
