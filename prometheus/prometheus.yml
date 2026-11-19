@@ -63,6 +63,11 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.2.131:9100']
 
+  - job_name: 'VPS-Server'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['85.10.132.208:9100']
+
   # - job_name: 'homeassistant-green'
   #   scrape_interval: 5s
   #   static_configs:
@@ -72,26 +77,6 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets: ['192.168.2.140:9100']
-
-  # - job_name: 'vlan-test-vm'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['10.100.5.142:9100']
-
-  # - job_name: 'node01'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['192.168.2.143:9100']
-
-  # - job_name: 'node02'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['192.168.2.144:9100']
-
-  # - job_name: 'node03'
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ['192.168.2.145:9100']
 
   ############
   # Cadvisor #
