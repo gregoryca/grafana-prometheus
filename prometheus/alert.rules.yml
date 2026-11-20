@@ -90,13 +90,13 @@ groups:
 
   # You may want to increase the alert manager 'repeat_interval' for this type of alert to daily or weekly
   - alert: HostCpuIsUnderutilized
-    expr: (min by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1h]))) > 0.8
+    expr: (min by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1h]))) > 0.9
     for: 1w
     labels:
       severity: info
     annotations:
       summary: Host CPU is underutilized (instance {{ $labels.instance }})
-      description: "CPU load has been < 20% for 1 week. Consider reducing the number of CPUs.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+      description: "CPU load has been < 10% for 1 week. Consider reducing the number of CPUs.\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
 
   - alert: HostCpuStealNoisyNeighbor
     expr: avg by(instance) (rate(node_cpu_seconds_total{mode="steal"}[5m])) * 100 > 10
