@@ -46,7 +46,7 @@ scrape_configs:
   - job_name: 'pve01-server'
     scrape_interval: 5s
     static_configs:
-      - targets: ['192.168.2.120:9100']
+      - targets: ['192.168.2.108:9100']
 
   - job_name: 'pve02-server'
     scrape_interval: 5s
@@ -63,7 +63,7 @@ scrape_configs:
     static_configs:
       - targets: ['192.168.2.131:9100']
 
-  - job_name: 'VPS-Server'
+  - job_name: 'vps-server'
     scrape_interval: 5s
     static_configs:
       - targets: ['85.10.132.208:9100']
